@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const _ = require('lodash');
 const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
+app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '500mb' }));
 
 app.get('/xml', async (req, res, next) => {
   res.send('xml');
@@ -32,37 +34,16 @@ app.get('/upload', async (req, res, next) => {
 });
 
 
-app.put('/upload-avatar', upload.single('avatar'), async (req, res) => {
-  try {
-    console.log('req.files', req.file);
+app.put('/upload-avatar', upload.single('file'), async (req, res) => {
 
-      if(!req.file) {
-          res.send({
-              status: false,
-              message: 'No file uploaded'
-          });
-      } else {
-          //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
   
+  try {
 
-          const avatar = req.file;
+    fs.writeFileSync('uploads/archivo.mp4', req.body);
+  
+    res.status(200).json({ message: 'Archivo subido exitosamente' });
+    
 
-          console.log('avatar', avatar);
-          
-          //Use the mv() method to place the file in the upload directory (i.e. "uploads")
-          avatar.mv('./uploads/' + avatar.name);
-
-          //send response
-          res.send({
-              status: true,
-              message: 'File is uploaded',
-              data: {
-                  name: avatar.name,
-                  mimetype: avatar.mimetype,
-                  size: avatar.size
-              }
-          });
-      }
   } catch (err) {
       res.status(500).send(err);
   }
