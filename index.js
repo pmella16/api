@@ -5,8 +5,11 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const _ = require('lodash');
+const multer = require('multer');
 
 const app = express();
+const upload = multer({ dest: 'uploads/' });
+
 const PORT = 5555;
 
 // enable files upload
@@ -29,20 +32,20 @@ app.get('/upload', async (req, res, next) => {
 });
 
 
-app.put('/upload-avatar', async (req, res) => {
+app.put('/upload-avatar', upload.single('avatar'), async (req, res) => {
   try {
-    console.log('req', req);
+    console.log('req.files', req.file);
 
-      if(!req.files) {
+      if(!req.file) {
           res.send({
               status: false,
               message: 'No file uploaded'
           });
       } else {
           //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-          console.log('req.files', req.files);
+  
 
-          const avatar = req.files.avatar;
+          const avatar = req.file;
 
           console.log('avatar', avatar);
           
