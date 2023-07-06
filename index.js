@@ -23,8 +23,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
-
-app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '500mb' }));
+app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.raw({ type: 'application/octet-stream' }));
 
 app.get('/xml', async (req, res, next) => {
   res.send('xml');
