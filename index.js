@@ -31,7 +31,7 @@ app.get('/upload', async (req, res, next) => {
 
 app.put('/upload-avatar', async (req, res) => {
   try {
-    onsole.log('req', req);
+    console.log('req', req);
 
       if(!req.files) {
           res.send({
