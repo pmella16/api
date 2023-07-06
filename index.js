@@ -34,15 +34,21 @@ app.get('/upload', async (req, res, next) => {
 });
 
 
-app.put('/upload-avatar', upload.single('file'), async (req, res) => {
+app.put('/upload-avatar', (req, res) => {
 
   
   try {
+    const writeStream = fs.createWriteStream('uploads/archivo.mp4');
 
-    fs.writeFileSync('uploads/archivo.mp4', req.body);
+    req.on('data', (chunk) => {
+      writeStream.write(chunk); // Escribe los fragmentos de datos en el archivo
+    });
   
-    res.status(200).json({ message: 'Archivo subido exitosamente' });
-    
+    req.on('end', () => {
+      writeStream.end(); // Finaliza la escritura en el archivo
+  
+      res.status(200).json({ message: 'Archivo subido exitosamente' });
+    });    
 
   } catch (err) {
       res.status(500).send(err);
