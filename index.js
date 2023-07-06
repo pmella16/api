@@ -29,7 +29,7 @@ app.get('/upload', async (req, res, next) => {
 });
 
 
-app.post('/upload-avatar', async (req, res) => {
+app.put('/upload-avatar', async (req, res) => {
   try {
       if(!req.files) {
           res.send({
