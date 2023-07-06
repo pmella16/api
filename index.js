@@ -31,6 +31,8 @@ app.get('/upload', async (req, res, next) => {
 
 app.put('/upload-avatar', async (req, res) => {
   try {
+    onsole.log('req', req);
+
       if(!req.files) {
           res.send({
               status: false,
@@ -38,7 +40,11 @@ app.put('/upload-avatar', async (req, res) => {
           });
       } else {
           //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-          let avatar = req.files.avatar;
+          console.log('req.files', req.files);
+
+          const avatar = req.files.avatar;
+
+          console.log('avatar', avatar);
           
           //Use the mv() method to place the file in the upload directory (i.e. "uploads")
           avatar.mv('./uploads/' + avatar.name);
