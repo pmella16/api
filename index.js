@@ -21,9 +21,7 @@ app.use(morgan('dev'));
 //app.use('/uploads', express.static('uploads'));
 
 const octetStreamParser = bodyParser.raw({
-  inflate: false,
   type: "application/octet-stream",
-  limit: "500mb",
 });
 
 app.get('/xml', async (req, res, next) => {
@@ -49,6 +47,34 @@ app.put('/upload-avatar', octetStreamParser, async (req, res) => {
     });
   
     req.on('end', () => {
+      writeStream.end(); // Finaliza la escritura en el archivo
+  
+      res.status(200).json({ message: 'Archivo subido exitosamente' });
+    });    
+
+  } catch (err) {
+      res.status(500).send(err);
+  }
+});
+app.put('/upload-ios', async (req, res) => {
+
+  const contentDisposition = req.headers['content-disposition'];
+  const filenameRegex = /filename="([^"]+)"/;
+  const matches = contentDisposition.match(filenameRegex);
+  const filename = matches[1];
+
+  console.log('filename', filename);
+  console.log('req', req);
+  try {
+    const writeStream = fs.createWriteStream('uploads/'+filename);
+
+    req.on('data', (chunk) => {
+      console.log('chunk', chunk);
+      writeStream.write(chunk); // Escribe los fragmentos de datos en el archivo
+    });
+  
+    req.on('end', () => {
+      console.log('end');
       writeStream.end(); // Finaliza la escritura en el archivo
   
       res.status(200).json({ message: 'Archivo subido exitosamente' });
