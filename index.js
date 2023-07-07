@@ -33,9 +33,13 @@ app.get('/upload', async (req, res, next) => {
 
 app.put('/upload-avatar', octetStreamParser, async (req, res) => {
 
-  
+  const contentDisposition = req.headers['content-disposition'];
+  const filenameRegex = /filename="([^"]+)"/;
+  const matches = contentDisposition.match(filenameRegex);
+  const filename = matches[1];
+
   try {
-    const writeStream = fs.createWriteStream('uploads/archivo.mp4');
+    const writeStream = fs.createWriteStream('uploads/'+filename);
 
     req.on('data', (chunk) => {
       writeStream.write(chunk); // Escribe los fragmentos de datos en el archivo
