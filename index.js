@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 const fs = require('fs');
 
@@ -14,7 +15,9 @@ const PORT = 5555;
 
 //add other middleware
 app.use(cors());
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(morgan('dev'));
 //app.use('/uploads', express.static('uploads'));
 
 const octetStreamParser = bodyParser.raw({
