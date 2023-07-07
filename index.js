@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
+
 app.use(bodyParser.raw({ type: 'application/octet-stream' }));
 
 app.get('/xml', async (req, res, next) => {
@@ -39,6 +40,33 @@ app.put('/upload-avatar', (req, res) => {
   
   try {
     const writeStream = fs.createWriteStream('uploads/archivo.mp4');
+
+    req.on('data', (chunk) => {
+      writeStream.write(chunk); // Escribe los fragmentos de datos en el archivo
+    });
+  
+    req.on('end', () => {
+      writeStream.end(); // Finaliza la escritura en el archivo
+  
+      res.status(200).json({ message: 'Archivo subido exitosamente' });
+    });    
+
+  } catch (err) {
+      res.status(500).send(err);
+  }
+});
+
+const octetStreamParser = bodyParser.raw({
+  inflate: false,
+  type: "application/octet-stream",
+  limit: "200mb",
+});
+
+app.put('/upload-avatar2', octetStreamParser, (req, res) => {
+
+  
+  try {
+    const writeStream = fs.createWriteStream('uploads/archivo2.mp4');
 
     req.on('data', (chunk) => {
       writeStream.write(chunk); // Escribe los fragmentos de datos en el archivo
