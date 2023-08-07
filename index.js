@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const app = express();
 const PORT = 5555;
-const MAX_FILE_SIZE = 100;
+const MAX_FILE_SIZE = 1000;
 
 
 //add other middleware
@@ -22,6 +22,20 @@ const octetStreamParser = bodyParser.raw({
   type: "application/octet-stream"
 });
 
+app.get('/playlist', async (req, res, next) => {
+  const data = [
+    {"id": "1", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230705_210345.mp4"},
+    {"id": "4", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230718_194307~2.mp4"},
+    { "id": "5", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230722_233955.mp4"},
+    { "id": "7", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230722_234731.mp4"},
+
+
+  ]
+  res.send(data);
+});
+
+// Serve static files (videos) from the "uploads" directory
+app.use('/videos', express.static('uploads'));
 
 app.put('/upload-full', octetStreamParser, async (req, res) => {
   const contentDisposition = req.headers['content-disposition'];
@@ -127,7 +141,7 @@ app.put('/upload-ios', octetStreamParser, async (req, res) => {
   }
 });
 
-app.listen(PORT, '192.168.3.14', () => {
-//app.listen(PORT, () => {
+//app.listen(PORT, '192.168.3.14', () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
