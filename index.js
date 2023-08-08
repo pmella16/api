@@ -18,10 +18,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
 
-const octetStreamParser = bodyParser.raw({
-  type: "application/octet-stream",
-  limit: '1000mb'
-});
+app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '1000mb' }));
+
 
 app.get('/playlist', async (req, res, next) => {
   const data = [
