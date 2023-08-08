@@ -36,7 +36,7 @@ app.get('/playlist', async (req, res, next) => {
 // Serve static files (videos) from the "uploads" directory
 app.use('/videos', express.static('uploads'));
 
-app.put('/upload-full', octetStreamParser, async (req, res) => {
+app.put('/upload-full', async (req, res) => {
   const contentDisposition = req.headers['content-disposition'];
   const filenameRegex = /filename="([^"]+)"/;
   const matches = contentDisposition.match(filenameRegex);
@@ -70,7 +70,7 @@ app.put('/upload-full', octetStreamParser, async (req, res) => {
 });
 
 
-app.put('/upload-corta', octetStreamParser, async (req, res) => {
+app.put('/upload-corta', async (req, res) => {
   const contentDisposition = req.headers['content-disposition'];
   const filenameRegex = /filename="([^"]+)"/;
   const matches = contentDisposition.match(filenameRegex);
@@ -111,7 +111,7 @@ app.put('/upload-corta', octetStreamParser, async (req, res) => {
 });
 
 
-app.put('/upload-ios', octetStreamParser, async (req, res) => {
+app.put('/upload-ios', async (req, res) => {
 
   const contentDisposition = req.headers['content-disposition'];
   const filenameRegex = /filename="([^"]+)"/;
