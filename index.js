@@ -54,15 +54,9 @@ app.put('/upload-full', async (req, res) => {
 
     req.on('end', () => {
       writeStream.end(); // Finaliza la escritura en el archivo
-
-      if (fileSize > MAX_FILE_SIZE * 1024 * 1024) { // Verifica el tamaño límite (10 megabytes)
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-        res.status(413).json({ message: 'El tamaño del archivo excede el límite permitido' });
-      } else {
-        res.status(200).json({ message: 'Archivo subido exitosamente' });
-      }
+      console.log('fileSize', fileSize);
+      console.log('filePath', filePath);
+      res.status(200).json({ message: 'Archivo subido exitosamente' });
     });
   } catch (err) {
     res.status(500).send(err);
