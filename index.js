@@ -22,7 +22,7 @@ const octetStreamParser = bodyParser.raw({
   type: "application/octet-stream"
 });
 
-app.get('/api/playlist', async (req, res, next) => {
+app.get('/playlist', async (req, res, next) => {
   const data = [
     {"id": "1", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230705_210345.mp4"},
     {"id": "4", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230718_194307~2.mp4"},
