@@ -22,7 +22,7 @@ const octetStreamParser = bodyParser.raw({
   type: "application/octet-stream"
 });
 
-app.get('api/playlist', async (req, res, next) => {
+app.get('/playlist', async (req, res, next) => {
   const data = [
     {"id": "1", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230705_210345.mp4"},
     {"id": "4", "title": "video de prueba", "desc": "esto es un video de prueba", "url": "http://192.168.3.14:5555/videos/VID_20230718_194307~2.mp4"},
@@ -37,7 +37,7 @@ app.get('api/playlist', async (req, res, next) => {
 // Serve static files (videos) from the "uploads" directory
 app.use('/videos', express.static('uploads'));
 
-app.put('/api/upload-full', octetStreamParser, async (req, res) => {
+app.put('/upload-full', octetStreamParser, async (req, res) => {
   const contentDisposition = req.headers['content-disposition'];
   const filenameRegex = /filename="([^"]+)"/;
   const matches = contentDisposition.match(filenameRegex);
