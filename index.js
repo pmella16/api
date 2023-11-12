@@ -54,6 +54,9 @@ app.get('/playlist', async (req, res, next) => {
 
 // Serve static files (videos) from the "uploads" directory
 app.use('/videos', express.static('uploads'));
+// Configura la ruta para servir archivos estáticos
+app.use('/hl/music', express.static('/usr/share/nginx/html/dev/hl/music'));
+
 
 app.put('/upload-full', async (req, res) => {
   const contentDisposition = req.headers['content-disposition'];
